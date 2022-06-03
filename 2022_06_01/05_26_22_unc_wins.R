@@ -64,3 +64,6 @@ chart <- totals %>%  # first, re-arrange the order of the rows
     source_notes.font.size = px(10),
     row.striping.background_color = "#dbebf6",
   )
+
+# save image
+gtsave_extra(chart, "blowout_chart.png", vwidth = 400, vheight = 430)
