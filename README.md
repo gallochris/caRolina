@@ -4,6 +4,6 @@ This a place for me to share any code of charts or graphs I'm creating while lea
 
 The focus of the data is Carolina sports. I often share the information via Twitter [@dadgumboxscores](https://twitter.com/dadgumboxscores). 
 
-Below is an example of one my the recent charts: 
+Below is an example of one the recent charts: 
 
 ![waffle_chart](https://github.com/gallochris/caRolina/blob/main/2022_06_06/vh.png)
