@@ -53,6 +53,7 @@ gtsave(table,
 
 # lottery picks
 lottery <- nba %>%
+  filter(NUMBER == 1) %>%
   filter(PICK < 14) %>%
   count(College, Year, name = "total_picks") %>%
   arrange(-total_picks) %>%
