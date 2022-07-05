@@ -25,6 +25,23 @@ mm <- powerfive %>%
 # save coordinates for table
 mm <- tibble(x = 110, y = 3.5, mm = list(mm))
 
+# add theme 
+theme_me <- function () {
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
+    theme (
+      plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        vjust = -2,
+        lineheight = 0.9,
+        size = 8
+      ),
+      plot.caption = element_text(size = 6, hjust = 1),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "floral white", color = "floral white")
+    )
+}
+
 # build density chart
 by_conf <- powerfive %>%
   ggplot(aes(y = Conference, x = Rank, fill = Conference)) +
@@ -129,7 +146,53 @@ npf <- dc %>%
     Conference != 'SEC',
     Conference != 'Big 12'
   ) %>%
+  mutate(
+    # change names to be abbreviated
+    School = case_when(
+      School == 'North Carolina A&T State' ~ 'North Carolina A&T',
+      TRUE ~ School
+    )
+  ) %>%
   arrange(Rank) %>%
   select(Rank, School, Conference) %>%
   filter(Rank < 100) %>%
   slice(1:10)
+
+
+## jitter
+p5 <- powerfive %>%
+  mutate(
+    # change names to be abbreviated
+    School = case_when(
+      School == 'North Carolina State' ~ 'NC State',
+      School == 'Miami (FL)' ~ 'Miami',
+      TRUE ~ School
+    )
+  ) %>%
+  ggplot(aes(x = Conference, y = Rank)) +
+  geom_cfb_logos(aes(team = School), width = 0.035, position = position_jitter(width = 0.1, height = 0.1)) +
+  scale_y_continuous(breaks = seq(0, 110, 10)) +
+  coord_flip() +
+  geom_hline(yintercept = 50, linetype = 'dashed') +
+  theme_me() +
+  theme(
+    legend.position = "none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8)
+  ) +
+  labs(
+    x = "",
+    y = "Rank",
+    title = "2021-22 Directors' Cup Rankings by Conference",
+    caption = "@dadgumboxscores | July 5, 2022 | data via nacda.com"
+  )
+
+# save the chart
+ggsave(
+  "p5.png",
+  p5,
+  w = 6,
+  h = 4,
+  dpi = 300,
+  type = 'cairo'
+)
