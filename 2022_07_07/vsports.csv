@@ -1,0 +1,131 @@
+﻿school,value,group,conference
+North Carolina,15,w,ACC
+North Carolina,13,m,ACC
+Duke,14,w,ACC
+Duke,13,m,ACC
+Boston College,14,w,ACC
+Boston College,14,m,ACC
+Clemson,10,w,ACC
+Clemson,9,m,ACC
+Florida State,11,w,ACC
+Florida State,9,m,ACC
+Georgia Tech,8,w,ACC
+Georgia Tech,9,m,ACC
+NC State,12,w,ACC
+NC State,11,m,ACC
+Syracuse,11,w,ACC
+Syracuse,9,m,ACC
+Louisville,13,w,ACC
+Louisville,10,m,ACC
+Miami,10,w,ACC
+Miami,8,m,ACC
+Notre Dame,13,w,ACC
+Notre Dame,13,m,ACC
+Pittsburgh,10,w,ACC
+Pittsburgh,9,m,ACC
+Virginia,14,w,ACC
+Virginia,13,m,ACC
+Virginia Tech,11,w,ACC
+Virginia Tech,11,m,ACC
+Wake Forest,9,w,ACC
+Wake Forest,9,m,ACC
+Auburn,12,w,SEC
+Auburn,9,m,SEC
+LSU,12,w,SEC
+LSU,9,m,SEC
+Mississippi State,10,w,SEC
+Mississippi State,8,m,SEC
+Texas A&M,11,w,SEC
+Texas A&M,9,m,SEC
+Alabama,12,w,SEC
+Alabama,9,m,SEC
+Arkansas,11,w,SEC
+Arkansas,8,m,SEC
+Florida,12,w,SEC
+Florida,9,m,SEC
+Georgia,12,w,SEC
+Georgia,9,m,SEC
+Kentucky,12,w,SEC
+Kentucky,11,m,SEC
+Ole Miss,10,w,SEC
+Ole Miss,8,m,SEC
+Missouri,11,w,SEC
+Missouri,9,m,SEC
+South Carolina,12,w,SEC
+South Carolina,9,m,SEC
+Tennessee,11,w,SEC
+Tennessee,9,m,SEC
+Vanderbilt,10,w,SEC
+Vanderbilt,6,m,SEC
+Indiana,13,w,BigTen
+Indiana,11,m,BigTen
+Michigan State,12,w,BigTen
+Michigan State,12,m,BigTen
+Northwestern,13,w,BigTen
+Northwestern,9,m,BigTen
+Penn State,15,w,BigTen
+Penn State,16,m,BigTen
+Purdue,10,w,BigTen
+Purdue,10,m,BigTen
+Rutgers,15,w,BigTen
+Rutgers,10,m,BigTen
+Ohio State,18,w,BigTen
+Ohio State,17,m,BigTen
+Illinois,11,w,BigTen
+Illinois,10,m,BigTen
+Iowa,13,w,BigTen
+Iowa,8,m,BigTen
+Maryland,12,w,BigTen
+Maryland,8,m,BigTen
+Michigan,15,w,BigTen
+Michigan,14,m,BigTen
+Minnesota,13,w,BigTen
+Minnesota,9,m,BigTen
+Nebraska,14,w,BigTen
+Nebraska,10,m,BigTen
+Wisconsin,12,w,BigTen
+Wisconsin,12,m,BigTen
+Baylor,11,w,Big12
+Baylor,8,m,Big12
+Iowa State,11,w,Big12
+Iowa State,7,m,Big12
+Kansas State,8,w,Big12
+Kansas State,8,m,Big12
+Oklahoma State,9,w,Big12
+Oklahoma State,9,m,Big12
+TCU,12,w,Big12
+TCU,9,m,Big12
+Texas Tech,9,w,Big12
+Texas Tech,8,m,Big12
+Kansas,11,w,Big12
+Kansas,7,m,Big12
+Oklahoma,11,w,Big12
+Oklahoma,10,m,Big12
+Texas,11,w,Big12
+Texas,9,m,Big12
+West Virginia,11,w,Big12
+West Virginia,8,m,Big12
+Arizona State,16,w,Pac12
+Arizona State,11,m,Pac12
+Oregon State,10,w,Pac12
+Oregon State,7,m,Pac12
+Stanford,21,w,Pac12
+Stanford,17,m,Pac12
+Arizona,12,w,Pac12
+Arizona,9,m,Pac12
+California,17,w,Pac12
+California,12,m,Pac12
+UCLA,14,w,Pac12
+UCLA,11,m,Pac12
+Colorado,10,w,Pac12
+Colorado,7,m,Pac12
+Oregon,11,w,Pac12
+Oregon,9,m,Pac12
+USC,13,w,Pac12
+USC,10,m,Pac12
+Utah,13,w,Pac12
+Utah,8,m,Pac12
+Washington,12,w,Pac12
+Washington,10,m,Pac12
+Washington State,10,w,Pac12
+Washington State,7,m,Pac12
