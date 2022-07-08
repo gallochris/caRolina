@@ -11,7 +11,7 @@ Example of one of the recent charts:
 
 List of all charts: 
 
-- July 7, 2022: 🏈⚾️🏀🏐 Sponsored sports [code](https://github.com/gallochris/caRolina/blob/main/2022_07_07/07_07_22_sports_countR) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_07/vs.png)
+- July 7, 2022: 🏈⚾️🏀🏐 Sponsored sports [code](https://github.com/gallochris/caRolina/blob/main/2022_07_07/07_07_22_sports_count.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_07/vs.png)
 - July 5, 2022: 🏈⚾️🏀🏐 Directors' Cup standings [code](https://github.com/gallochris/caRolina/blob/main/2022_07_05/07_05_22_director_cup.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_05/cup.png)
 - July 1, 2022: 🏈 Record by opponent since 2000 [code](https://github.com/gallochris/caRolina/blob/main/2022_07_01/07_01_22_fball_opponents.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_01/fball.png)
 - June 26, 2022: 🏀 NBA Draft by school [code](https://github.com/gallochris/caRolina/blob/main/2022_06_26/06_26_22_nba_college.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_06_26/picks.png)
