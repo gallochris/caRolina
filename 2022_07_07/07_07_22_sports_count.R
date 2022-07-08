@@ -78,7 +78,7 @@ table <- big %>%
   opt_row_striping() %>% # stripe rows
   # set title + caption + subtitle
   tab_header(title = "2021-22 Sponsored Sports by School",
-             subtitle = "Only shcools with 25 or more sponsored sports shown.") %>%
+             subtitle = "Only schools with 25 or more sponsored sports shown.") %>%
   tab_source_note(source_note = "@dadgumboxscores | July 7, 2022 | data via web3.ncaa.org/directory")  %>%
   tab_footnote(footnote = "Counts mixed sports twice (i.e. sailing)",
                locations = cells_column_labels(columns = total)) %>%
