@@ -6,9 +6,14 @@ library(ggrepel)
 # load data from https://247sports.com/college/north-carolina/LongFormArticle/UNC-Tar-Heels-Basketball-Top-100-Players-1-10-189851846/#189851846_1
 unc <- read.csv('bestunc.csv')
 
+
+# create new column for facets 
+ff <- 
+
+
 # add theme
 theme_me <- function () {
-  theme_minimal(base_size = 10, base_family = "Arial") %+replace%
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
     theme (
       plot.title = element_text(
         hjust = 0.5,
@@ -17,13 +22,13 @@ theme_me <- function () {
       ),
       plot.subtitle = element_text(
         hjust = 0.5,
-        size = 12,
-        lineheight = 0.15,
+        size = 10,
+        lineheight = 0.25,
         vjust = -0.5
       ),
       plot.caption = element_text(
         hjust = 1,
-        size = 8,
+        size = 6,
         lineheight = 0.35,
         margin = margin(t = 20)
       ),
@@ -38,27 +43,25 @@ colors = c("#d67400", "#898989", "#0089d6")
 # scatter plot text repel
 gg <- unc %>%
   ggplot(aes(
-    x = Year,
-    y = Rank,
+    x = Rank,
+    y = Decade,
     label = Player,
     color = Jersey
   )) +
   geom_point(alpha = 0.25) +
-  geom_text_repel() +
-  scale_y_reverse(breaks = seq(0, 100, 5)) +
-  scale_x_continuous(breaks = seq(1952, 2022, 10),
-                     limits = c(1952, 2022)) +
-  geom_hline(yintercept = 50,
+  geom_text_repel(size = 2.5) +
+  scale_x_reverse(breaks = seq(0, 100, 10)) +
+  geom_vline(xintercept = 50,
              linetype = 'dashed',
              color = "#dddddd") +
   scale_color_manual(values = colors) +
   theme_me() +
   theme(legend.position = "none") +
+  coord_flip() +
   labs(
-    x = "Year (by last season played)",
-    y = "Ranking",
+    y = "Decade (by last season played)",
+    x = "Ranking",
     title = "Top 100 Players in Carolina History",
-    subtitle = "Players ranked since 1953-54 season by Adrian Atkinson and Inside Carolina.",
     caption = "@dadgumboxscores | July 10, 2022 | data via Adrian Atkinson"
   )
 
@@ -66,8 +69,8 @@ gg <- unc %>%
 ggsave(
   "gg.png",
   gg,
-  w = 10,
-  h = 8,
+  w = 9,
+  h = 6.5,
   dpi = 300,
   type = 'cairo'
 )
