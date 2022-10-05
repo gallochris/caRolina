@@ -11,7 +11,7 @@ Example of one of the recent charts:
 
 List of all charts: 
 
-- October 5, 2022: 🏑 Goals and Oppomnent Shots on Goal [code](https://github.com/gallochris/caRolina/blob/main/2022_10_05/10_05_2022_fockey.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_10_05/fockey.png)
+- October 5, 2022: 🏑 Goals and Opponent Shots on Goal [code](https://github.com/gallochris/caRolina/blob/main/2022_10_05/10_05_22_fockey.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_10_05/fockey_chart.png)
 - July 29, 2022: 🏀 '98 Jamison [code](https://github.com/gallochris/caRolina/blob/main/2022_07_29/07_29_2022_antawn.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_29/antawn.png)
 - July 15, 2022: 🏀 Tyler Hansbrough points [code](https://github.com/gallochris/caRolina/blob/main/2022_07_15/07_15_22_thans.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_15/phans.png)
 - July 10, 2022: 🏀 Top 100 Players [code](https://github.com/gallochris/caRolina/blob/main/2022_07_10/07_10_22_greats.R) | [image](https://github.com/gallochris/caRolina/blob/main/2022_07_10/gg.png)
