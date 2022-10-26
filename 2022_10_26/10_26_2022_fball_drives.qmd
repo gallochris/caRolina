@@ -1,0 +1,239 @@
+---
+title: "Carolina football: chicklet charts for drives"
+author: "Chris Gallo"
+date: "2022-10-26"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+editor: visual
+---
+
+```{r load-packages-and-data, include=FALSE, echo=FALSE, warning=FALSE}
+library(ggchicklet)
+library(tidyverse)
+library(cfbfastR)
+library(cfbplotR)
+library(paletteer)
+```
+
+##### Fetch data from cfbfastR
+
+```{r offense-defense-drives}
+off_drives <- cfbd_drives(2022,
+                          season_type = "regular",
+                          offense_team = "North Carolina")
+
+off <- off_drives %>% 
+  mutate(drive_result = case_when(
+    drive_result %in% c("END OF GAME", "END OF HALF") ~ "END OF QRT",
+    drive_result %in% c("MISSED FG","FUMBLE","INT") ~ "TURNOVER",
+    TRUE ~ drive_result)
+  ) %>% 
+  group_by(defense) %>% 
+  count(drive_result, name = "type_count")
+
+o <- off %>%
+  group_by(defense) %>%
+  mutate(pct = type_count / sum(type_count) * 100) %>%
+  rename(opponent = defense, type = drive_result)
+
+def_drives <- cfbd_drives(2022,
+                          season_type = "regular",
+                          defense_team = "North Carolina")
+
+
+def <- def_drives %>% 
+  mutate(drive_result = case_when(
+    drive_result %in% c("END OF GAME", "END OF HALF", "Uncategorized") ~ "END OF QRT",
+    drive_result %in% c("MISSED FG","FUMBLE","INT") ~ "TURNOVER",
+    TRUE ~ drive_result)
+  ) %>% 
+  group_by(offense) %>% 
+  count(drive_result, name = "type_count")
+
+d <- def %>%
+  group_by(offense) %>%
+  mutate(pct = type_count / sum(type_count) * 100) %>%
+  rename(opponent = offense, type = drive_result)
+
+```
+
+##### Factors and theme
+
+```{r factors-theme}
+o$type <- as.factor(o$type)
+o$type <- factor(o$type, levels = c("TD", "FG", "TURNOVER", "DOWNS", "PUNT", "END OF QRT"))
+
+o$opponent <- as.factor(o$opponent)
+o$opponent <- factor(o$opponent, levels = c("Florida A&M", "Appalachian State", "Georgia State", "Notre Dame", "Virginia Tech", "Miami", "Duke"))
+
+d$type <- as.factor(d$type)
+d$type <- factor(d$type, levels = c("TD", "FG", "TURNOVER", "DOWNS", "PUNT", "END OF QRT"))
+
+d$opponent <- as.factor(d$opponent)
+d$opponent <- factor(d$opponent, levels = c("Florida A&M", "Appalachian State", "Georgia State", "Notre Dame", "Virginia Tech", "Miami", "Duke"))
+
+
+theme_me <- function () {
+  theme_minimal(base_size = 15, base_family = "Arial") %+replace%
+    theme (
+      plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        vjust = -2,
+        lineheight = 0.9,
+        size = 10
+      ),
+      plot.caption = element_text(size = 8, hjust = 1),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "#DDECF6", color = "#DDECF6")
+    )
+}
+```
+
+### Offense chicklet chart
+
+```{r offense-chicklet-chart}
+offense <- o %>% 
+  ggplot(aes(opponent, pct)) + 
+  geom_chicklet(aes(fill = type)) +
+  scale_y_continuous(position = "left", labels = c("0%", "25%", "50%", "75%", "100%"), limits = c(0, 100)) +
+  coord_flip() +
+    # themes
+  theme_me() + 
+  theme(axis.text.y = element_cfb_logo( size = 1),
+        legend.position = 'bottom', 
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(), 
+        legend.title = element_blank(), 
+        legend.text = element_text(size = 9),
+        plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5, size = 10), 
+        plot.title.position = "plot", 
+        plot.margin = unit(c(.5, .5, 1, .5), "lines"), 
+        legend.margin=margin(0,0,0,0),
+        legend.box.margin=margin(.5,.5,.5,.5)) + 
+  labs(title = "Carolina Offense: drive results game by game for 2022 season",
+       subtitle = "Percentage of drives that ended in a result (TD, FG, turnover, etc.)",
+       caption = "@dadgumboxscores | October 26, 2022 | data via cfbfastR")  + 
+  guides(fill=guide_legend(
+    keywidth= .5,
+    keyheight= .2,
+    default.unit="inch", 
+    label.position = 'top', 
+    nrow = 1) 
+  ) +
+  scale_fill_paletteer_d("ggthemes::colorblind", labels = c("TD", "FG", "TO", "Downs", "Punt", "End of QRT"))
+  
+o_annotate <- offense +  
+  annotate(
+    geom = 'label',
+    y = 25,
+    x = "Florida A&M",
+    hjust = 0.75,
+    label = "~67% ended in the end zone",
+    colour = "floral white",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  ) + 
+  annotate(
+    geom = 'label',
+    y = 75,
+    x = "Notre Dame",
+    hjust = 0.75,
+    label = "~42% ended in a punt",
+    colour = "#333333",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  ) + 
+  annotate(
+    geom = 'label',
+    y = 67,
+    x = "Duke",
+    hjust = 0.75,
+    label = "~25% ended in a \n turnover/missed fg",
+    colour = "#333333",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  )
+
+o_annotate
+```
+
+### Defense chicklet chart
+
+```{r defense-chicklet-chart}
+ 
+defense <- d %>% 
+  ggplot(aes(opponent, pct)) + 
+  geom_chicklet(aes(fill = type)) +
+  scale_y_continuous(position = "left", labels = c("0%", "25%", "50%", "75%", "100%"), limits = c(0, 100)) +
+  coord_flip() +
+    # themes
+  theme_me() + 
+  theme(axis.text.y = element_cfb_logo( size = 1),
+        legend.position = 'bottom', 
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(), 
+        legend.title = element_blank(), 
+        legend.text = element_text(size = 9),
+        plot.title = element_text(hjust = .5), 
+        plot.subtitle = element_text(hjust = .5, size = 10), 
+        plot.background = element_rect(fill = "floral white", color = "floral white"),
+        plot.title.position = "plot", 
+        plot.margin = unit(c(.5, .5, 1, .5), "lines"), 
+        legend.margin=margin(0,0,0,0),
+        legend.box.margin=margin(.5,.5,.5,.5)) + 
+  labs(title = "Carolina Defense: drive results game by game for 2022 season",
+       subtitle = "Percentage of drives that ended in a result (TD, FG, turnover, etc.)",
+       caption = "@dadgumboxscores | October 26, 2022 | data via cfbfastR")  + 
+  guides(fill=guide_legend(
+    keywidth= .5,
+    keyheight= .2,
+    default.unit="inch", 
+    label.position = 'top', 
+    nrow = 1) 
+  ) +
+  scale_fill_paletteer_d("ggthemes::colorblind", labels = c("TD", "FG", "TO", "Downs", "Punt", "End of QRT"))
+  
+d_annotate <- defense +  
+  annotate(
+    geom = 'label',
+    y = 40,
+    x = "Appalachian State",
+    hjust = 0.75,
+    label = "~64% ended in the end zone",
+    colour = "floral white",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  ) + 
+  annotate(
+    geom = 'label',
+    y = 75,
+    x = "Georgia State",
+    hjust = 0.75,
+    label = "60% ended in a punt",
+    colour = "#333333",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  ) + 
+  annotate(
+    geom = 'label',
+    y = 45,
+    x = "Miami",
+    hjust = 0.75,
+    label = "~28% ended in a \n turnover/missed fg",
+    colour = "#333333",
+    fontface = 'bold',
+    alpha = .5,
+    size = 3
+  )
+
+d_annotate
+```
