@@ -146,11 +146,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Miami"</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Duke"</span> <span class="sc">~</span> <span class="dv">7</span>,</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Pittsburgh"</span> <span class="sc">~</span> <span class="dv">8</span>,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Virginia"</span> <span class="sc">~</span> <span class="dv">9</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>           )) <span class="sc">%&gt;%</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>           <span class="fu">arrange</span>(game_num) <span class="sc">%&gt;%</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>           <span class="fu">mutate</span>(<span class="at">drive_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>           <span class="fu">select</span>(game_num, offense, drive_num, drive_number, scoring, plays, yards, drive_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Virginia"</span> <span class="sc">~</span> <span class="dv">9</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            offense <span class="sc">==</span> <span class="st">"Wake Forest"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>           )) <span class="sc">%&gt;%</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>           <span class="fu">arrange</span>(game_num) <span class="sc">%&gt;%</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>           <span class="fu">mutate</span>(<span class="at">drive_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>           <span class="fu">select</span>(game_num, offense, drive_num, drive_number, scoring, plays, yards, drive_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -209,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>defense_plot <span class="ot">&lt;-</span> def_drive <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">offense =</span> <span class="fu">fct_relevel</span>(offense, <span class="fu">c</span>(<span class="st">"Florida A&amp;M"</span>, <span class="st">"Appalachian State"</span>, <span class="st">"Georgia State"</span>, <span class="st">"Notre Dame"</span>, <span class="st">"Virginia Tech"</span>, <span class="st">"Miami"</span>, <span class="st">"Duke"</span>, <span class="st">"Pittsburgh"</span>, <span class="st">"Virginia"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">offense =</span> <span class="fu">fct_relevel</span>(offense, <span class="fu">c</span>(<span class="st">"Florida A&amp;M"</span>, <span class="st">"Appalachian State"</span>, <span class="st">"Georgia State"</span>, <span class="st">"Notre Dame"</span>, <span class="st">"Virginia Tech"</span>, <span class="st">"Miami"</span>, <span class="st">"Duke"</span>, <span class="st">"Pittsburgh"</span>, <span class="st">"Virginia"</span>, <span class="st">"Wake Forest"</span>))) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> offense, <span class="at">y =</span> count, <span class="at">fill =</span> count)) <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Drive number"</span>, <span class="at">x =</span> <span class="st">""</span>) <span class="sc">+</span></span>
@@ -253,8 +254,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"def.png"</span>,</span>
 <span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  defense_plot,</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">w =</span> <span class="dv">10</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="dv">6</span>,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">w =</span> <span class="fl">10.5</span>,</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fl">7.5</span>,</span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>,</span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'cairo'</span></span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>)</span>

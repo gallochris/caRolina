@@ -1,0 +1,128 @@
+---
+title: "Carolina field hockey gold standard"
+date: "2022-11-16"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+editor: visual
+---
+
+```{r load-packages-and-data, include=FALSE, echo=FALSE, warning=FALSE, fig.width=16, fig.height=16}
+library(waffle)
+library(tidyverse)
+library(cfbplotR)
+library(ggtext)
+```
+
+### Load data for wikipedia
+
+```{r load-data}
+# pull data from wikipedia and filter by at least 15 appearaces
+fh <- read_csv("fh_wiki.csv") %>% filter(App > 15)
+
+# fix nas and replace with missed tournament
+fh[is.na(fh)] <- "Missed Tournament"
+```
+
+### Pivot the data and count it
+
+```{r data-manipulation}
+# find totals by pivoting longer 
+fh %>% 
+  pivot_longer(cols = !c("Schools", "App"), names_to = "year", values_to = "finish") -> totals
+
+# filter out northeastern (abitrarily) and missed tournaments 
+totals <- totals %>% 
+      filter(finish != "Missed Tournament") %>%
+      filter(Schools != "Northeastern") %>%
+       mutate(finish = case_when( 
+        finish %in% c("•", "16", "12", "QF") ~ "Participant",
+        finish == "CH" ~ "Champions",
+        finish == "SF" ~ "Semifinalist",
+        finish == "RU" ~ "Runner-up",
+        TRUE ~ finish
+      )) 
+
+final_counts <- totals  %>% 
+         mutate(Schools = fct_relevel(Schools, c("North Carolina", "Penn State", "Maryland", "Connecticut",
+  "Old Dominion", "Iowa", "Virginia", "Massachusetts", "Princeton", "Michigan", "Northwestern",
+  "Stanford", "Wake Forest", "Duke", "Syracuse"))) %>% 
+  count(Schools, finish) %>% 
+  select(Schools, finish, n)
+
+```
+
+### Set the theme for the plot
+
+```{r theme-me}
+# theme
+theme_me <- function () {
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
+    theme (
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 24,
+        face = "bold"
+      ),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        size = 10,
+        lineheight = 0.25,
+        vjust = -0.5
+      ),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 8,
+        lineheight = 0.35,
+        margin = margin(t = 20)
+      ),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "floral white", color = "floral white")
+    )
+}
+```
+
+### Create the plot
+
+```{r make-the-plot, warning=FALSE}
+# make the plot
+fh_plot <- final_counts %>% 
+    ggplot(aes(fill=finish, values=n)) + 
+    geom_waffle(color = "floral white", size=.25, n_rows = 5, flip = TRUE, use_glyph = "trophy",
+                radius = unit(4, "pt"),
+                height = 0.9, width = 0.9) +
+    facet_wrap(~Schools, nrow=3, strip.position = "bottom") +
+    scale_x_discrete(expand=c(0,0)) +
+    scale_y_continuous(labels = c(0, 10, 20, 30, 40),
+                       expand = c(0,0)) +
+    scale_fill_manual("",
+                      values=c('Champions'='#dfc27d','Runner-up'='#80cdc1','Semifinalist'='#018571','Participant'='#a6611a'),
+                      breaks=c("Champions", "Runner-up", "Semifinalist", "Participant"),
+                      labels=c("Champions", "Runner-up", "Semifinalist", "Participant")) +
+    coord_equal() +
+    labs(
+        title = "Field Hockey's Gold Standard is <span style='color:#56a0d3;'>North Carolina</span>",
+        subtitle = "Carolina owns the most tournament appearances (39), runner-ups (11)</span>, and the Heels are tied for most championships (9).",
+        x = "",
+        y = "",
+        caption = "@dadgumboxscores | November 17, 2022"
+    ) +
+    theme_me() +
+    theme(panel.grid = element_blank(),
+          axis.ticks.y = element_line()) +
+    guides(fill = guide_legend()) +
+    theme(legend.position = "top", strip.text = element_cfb_logo(size = 1), plot.title = element_markdown(), plot.subtitle = element_markdown())
+
+# save image of plot
+  ggsave(
+  "fh.png",
+  fh_plot,
+  w = 9.5,
+  h = 9.5,
+  dpi = 300,
+  type = 'cairo'
+)
+  
+fh_plot
+```

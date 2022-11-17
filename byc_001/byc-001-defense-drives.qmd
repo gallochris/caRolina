@@ -35,7 +35,8 @@ defense <- defense %>%
             offense == "Miami" ~ 6,
             offense == "Duke" ~ 7,
             offense == "Pittsburgh" ~ 8,
-            offense == "Virginia" ~ 9
+            offense == "Virginia" ~ 9,
+            offense == "Wake Forest" ~ 10,
            )) %>%
            arrange(game_num) %>%
            mutate(drive_num = 1:n()) %>% 
@@ -57,7 +58,7 @@ def_drive$xmin <- c(0, head(def_drive$xmax, n=-1))
 
 ```
 
-### Set the theme for the plot 
+### Set the theme for the plot
 
 ```{r theme-me}
 # theme
@@ -91,7 +92,7 @@ theme_me <- function () {
 
 ```{r make-the-plot, warning=FALSE}
 defense_plot <- def_drive %>%
-  mutate(offense = fct_relevel(offense, c("Florida A&M", "Appalachian State", "Georgia State", "Notre Dame", "Virginia Tech", "Miami", "Duke", "Pittsburgh", "Virginia"))) %>% 
+  mutate(offense = fct_relevel(offense, c("Florida A&M", "Appalachian State", "Georgia State", "Notre Dame", "Virginia Tech", "Miami", "Duke", "Pittsburgh", "Virginia", "Wake Forest"))) %>% 
   ggplot(aes(x = offense, y = count, fill = count)) +
   geom_bar(stat = "identity", colour = "black") +
   labs(y="Drive number", x = "") +
@@ -135,8 +136,8 @@ defense_plot <- def_drive %>%
 ggsave(
   "def.png",
   defense_plot,
-  w = 10,
-  h = 6,
+  w = 10.5,
+  h = 7.5,
   dpi = 300,
   type = 'cairo'
 )
