@@ -62,18 +62,19 @@ theme_me <- function () {
     theme (
       plot.title = element_text(
         hjust = 0.5,
-        size = 24,
-        face = "bold"
+        size = 18,
+        face = "bold",
+        lineheight = 0.75,
       ),
       plot.subtitle = element_text(
         hjust = 0.5,
         size = 10,
         lineheight = 0.25,
-        vjust = -0.5
+        vjust = -3,
       ),
       plot.caption = element_text(
         hjust = 1,
-        size = 8,
+        size = 6,
         lineheight = 0.35,
         margin = margin(t = 20)
       ),
@@ -89,9 +90,7 @@ theme_me <- function () {
 # make the plot
 fh_plot <- final_counts %>% 
     ggplot(aes(fill=finish, values=n)) + 
-    geom_waffle(color = "floral white", size=.25, n_rows = 5, flip = TRUE, use_glyph = "trophy",
-                radius = unit(4, "pt"),
-                height = 0.9, width = 0.9) +
+    geom_waffle(color = "floral white", size=.25, n_rows = 5, flip = TRUE,  radius = unit(4, "pt"), height = 0.9, width = 0.9) +
     facet_wrap(~Schools, nrow=3, strip.position = "bottom") +
     scale_x_discrete(expand=c(0,0)) +
     scale_y_continuous(labels = c(0, 10, 20, 30, 40),
@@ -102,8 +101,7 @@ fh_plot <- final_counts %>%
                       labels=c("Champions", "Runner-up", "Semifinalist", "Participant")) +
     coord_equal() +
     labs(
-        title = "Field Hockey's Gold Standard is <span style='color:#56a0d3;'>North Carolina</span>",
-        subtitle = "Carolina owns the most tournament appearances (39), runner-ups (11)</span>, and the Heels are tied for most championships (9).",
+        title = "<span style='color:#56a0d3;'>North Carolina</span> is the Standard in the  \nNCAA Field Hockey Tournament",
         x = "",
         y = "",
         caption = "@dadgumboxscores | November 17, 2022"
@@ -112,17 +110,19 @@ fh_plot <- final_counts %>%
     theme(panel.grid = element_blank(),
           axis.ticks.y = element_line()) +
     guides(fill = guide_legend()) +
-    theme(legend.position = "top", strip.text = element_cfb_logo(size = 1), plot.title = element_markdown(), plot.subtitle = element_markdown())
+    theme(legend.position = "top",  strip.text = element_cfb_logo(size = 1), plot.title = element_markdown(), plot.subtitle = element_markdown())
 
 # save image of plot
   ggsave(
   "fh.png",
   fh_plot,
-  w = 9.5,
-  h = 9.5,
+  w = 7,
+  h = 7,
   dpi = 300,
   type = 'cairo'
 )
   
 fh_plot
 ```
+
+\
