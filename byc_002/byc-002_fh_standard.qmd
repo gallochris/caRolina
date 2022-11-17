@@ -37,10 +37,10 @@ totals <- totals %>%
       filter(finish != "Missed Tournament") %>%
       filter(Schools != "Northeastern") %>%
        mutate(finish = case_when( 
-        finish %in% c("•", "16", "12", "QF") ~ "Participant",
-        finish == "CH" ~ "Champions",
-        finish == "SF" ~ "Semifinalist",
-        finish == "RU" ~ "Runner-up",
+        finish %in% c("•", "16", "12", "QF") ~ "0",
+        finish == "CH" ~ "3",
+        finish == "SF" ~ "1",
+        finish == "RU" ~ "2",
         TRUE ~ finish
       )) 
 
@@ -96,9 +96,9 @@ fh_plot <- final_counts %>%
     scale_y_continuous(labels = c(0, 10, 20, 30, 40),
                        expand = c(0,0)) +
     scale_fill_manual("",
-                      values=c('Champions'='#dfc27d','Runner-up'='#80cdc1','Semifinalist'='#018571','Participant'='#a6611a'),
-                      breaks=c("Champions", "Runner-up", "Semifinalist", "Participant"),
-                      labels=c("Champions", "Runner-up", "Semifinalist", "Participant")) +
+                      values=c("0"="#a6611a", "1"="#018571", "2"="#80cdc1", "3"="#dfc27d"),
+                      breaks=c("0", "1", "2", "3"),
+                      labels=c("Participant", "Semifinalist", "Runner-up", "Champions")) +
     coord_equal() +
     labs(
         title = "<span style='color:#56a0d3;'>North Carolina</span> is the Standard in the  \nNCAA Field Hockey Tournament",
