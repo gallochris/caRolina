@@ -1,0 +1,167 @@
+---
+title: "Carolina Football Expectations"
+date: "2022-12-07"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+editor: visual
+---
+
+```{r load-packages-and-data, include=FALSE, echo=FALSE, warning=FALSE, fig.width=16, fig.height=16}
+library(tidyverse)
+library(ggtext)
+library(gt)
+library(gtExtras)
+```
+
+### Make data
+
+```{r load-data-examples, message = FALSE}
+# data was manually created because lack of reliability in cfbfastR 
+# requires an espn insider subscription
+tibble::tribble(
+     ~Season,~Pre,~Final,~OFF,~DEF,~ST, 
+     2022,38,52,14,106,35,
+     2021,11,59,11,101,55,
+     2020,18,12,6,53,24,
+     2019,66,30,25,44,74
+    ) -> unc_sp
+
+# manually created via vegasinsider
+tibble::tribble(
+     ~Season,~Pre,~Wins,
+     2022,7.5,9,
+     2021,10,6,
+     2020,8.5,8,
+     2019,4.5,7,
+    ) -> unc_win_totals
+
+
+# load csv from betiq / teamrankings 
+mack <- read_csv("mack_spread.csv")
+```
+
+### Make the tables
+
+```{r make-the-table, warning=FALSE}
+# make the win total plot 
+unc_win_totals %>%
+  mutate(Actual = Pre, target_col = Wins) %>%
+  select(Season, Pre, Wins, Actual, target_col) %>%
+  gt() %>%
+  cols_label(Pre = "Preseason Total",
+             Actual = "Performance",
+             Wins = "Actual Wins") %>%
+  gt_plt_bullet(
+    column = Actual,
+    target = target_col,
+    width = 45,
+    palette = c("#d38956", "#56a0d3")
+  ) %>%
+  cols_width(4 ~ px(250)) %>%
+  tab_header(
+    title = "Preseason Win Totals and Actual Wins",
+    subtitle = md(
+      "Shows the <span style='color:#d38956; font-weight:bold'>preseason win total</span> and <span style='color:#56a0d3; font-weight:bold'>actual wins</span> during the season."
+    )
+  ) %>%
+  tab_source_note(source_note = "@dadgumboxscores | data via vegasinsider.com")  %>%
+  # adjust font sizes
+  tab_options (source_notes.font.size = px(10),
+               table.font.size = px(12),
+  ) %>%
+  gt_theme_538() %>%
+  gtsave("win_totals.png")
+
+
+# make the sp+ table 
+unc_sp %>%
+  mutate(Performance = Pre, target_col = Final) %>%
+  select(Season, Pre, Final, Performance, target_col) %>%
+  gt() %>%
+  cols_label(Pre = "Projected") %>%
+  gt_plt_bullet(
+    column = Performance,
+    target = target_col,
+    width = 45,
+    palette = c("#d38956", "#56a0d3")
+  ) %>%
+  tab_header(
+    title = "SP+ Preseason Ranking and Final Ranking",
+    subtitle = html(
+      "Shows the <span style='color:#d38956; font-weight:bold'>preseason</span> and <span style='color:#56a0d3; font-weight:bold'>final SP+</span> rankings."
+    )
+  ) %>%
+  tab_source_note(source_note = "@dadgumboxscores | data via ESPN")  %>%
+  # adjust font sizes
+  tab_options (source_notes.font.size = px(10),
+               table.font.size = px(12),
+  ) %>%
+  tab_footnote(footnote = "Post-bowl ranking for all seasons except 2022.",
+               locations = cells_column_labels(columns = Final)) %>%
+  gt_theme_538() %>%
+  gtsave("sp_plus.png")
+
+
+# make the spread table and minipulate the data
+mack %>%
+  mutate(
+    Result = if_else(Opp > Pts, "L", "W"),
+    OU = if_else(Combined > Total, "Over", "Under")
+  ) %>%
+  mutate(
+    Opponent = case_when(
+      Opponent == "VA Tech" ~ "Virginia Tech",
+      Opponent == "GA Tech" ~ "Georgia Tech",
+      Opponent == "S Carolina" ~ "South Carolina",
+      Opponent == "Miami (FL)" ~ "Miami",
+      Opponent == "Boston Col" ~ "Boston College",
+      Opponent == "Florida St" ~ "Florida State",
+      Opponent == "App State" ~ "Appalachian State",
+      TRUE ~ Opponent
+    )
+  ) %>%
+  select(Date, Opponent, Location, Result, Pts, Opp, Spread, ATS, Total, OU) -> mack_table
+
+mack_table %>%
+  gt() %>%
+  cols_label(OU = "O/U") %>%
+  data_color(# Update cell colors...
+    columns = c(ATS),
+    # ...for supp column!
+    colors = scales::col_factor(
+      # <- bc it's a factor
+      palette = c("#ffffff", "#daeaf5"),
+      # Two factor levels, two colors
+      domain = c("L", "W")# Levels
+    )) %>%
+  data_color(# Update cell colors...
+    columns = c(Result),
+    # ...for supp column!
+    colors = scales::col_factor(
+      # <- bc it's a factor
+      palette = c("#ffffff", "#daeaf5"),
+      # Two factor levels, two colors
+      domain = c("L", "W")# Levels
+    )) %>%
+  fmt(
+    columns = c(Spread),
+    fns = function(x) {
+      ifelse(x > 0, paste0("+", x), x)
+    }
+  ) %>%
+  gt_highlight_rows(
+    rows = c(3, 13, 19, 21, 32),
+    fill = "lightpink",
+    bold_target_only = TRUE,
+    target_col = c("Result", "Spread"),
+  ) %>%
+  tab_header(title = "Carolina is 23-24 against the spread under Mack Brown 2.0",
+             subtitle = "Result, point-spread, and total for each game against an FBS opponent since 2019.") %>%
+  tab_source_note(source_note = "@dadgumboxscores | data via BetIQ (TeamRankings)")  %>%
+  gt_theme_538() %>%
+  gtsave("mack_spread.png")
+```
+
+\
