@@ -33,7 +33,7 @@ tibble::tribble(
      ~Season,~Pre,~Wins,
      2022,7.5,9,
      2021,10,6,
-     2020,8.5,8,
+     2020,7.5,8,
      2019,4.5,7,
     ) -> unc_win_totals
 
