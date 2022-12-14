@@ -12,6 +12,8 @@ editor: visual
 library(tidyverse)
 library(gt)
 library(gtExtras)
+library(cfbplotR)
+library(janitor)
 ```
 
 ### Load data and make data
@@ -28,100 +30,81 @@ season <- tibble::tribble(
   "2022-23",11,"Free Throws",24.5
 )
 
-# load csv ffrom sportsreference
-hubie <- read_csv('hubie.csv')
+# load csv from sportsreference
+assists <- read_csv('assists_turnovers.csv')
 ```
 
 ### Manipulate data and make tables 
 
 ```{r make-the-table, warning=FALSE}
-# season table 
+# season table
 season_tb <- season %>%
   group_by(Season) %>%
-  summarize(list_data = list(Values)) %>% 
+  summarize(list_data = list(Values)) %>%
   arrange(Season)
 
-join_season <- season %>% 
-  group_by(Season) %>% 
-  summarize(Games = Games[1]) 
+join_season <- season %>%
+  group_by(Season) %>%
+  summarize(Games = Games[1])
 
-final_season <- merge(season_tb, join_season, by = "Season") %>% 
-  select(Season, Games, list_data) 
+final_season <- merge(season_tb, join_season, by = "Season") %>%
+  select(Season, Games, list_data)
 
 final_season %>%
-  gt() %>% 
-  gt_plt_bar_stack(column = list_data, width = 50,
-                   labels = c("Threes", "Twos", "Free Throws"),
-                   palette= c("#d38956", "#56a0d3", "#d356a0"),
-                   fmt_fn = scales::label_number(accuracy = 0.1)) %>%
-  gt_theme_nytimes() %>% 
+  gt() %>%
+  gt_plt_bar_stack(
+    column = list_data,
+    width = 50,
+    labels = c("Threes", "Twos", "Free Throws"),
+    palette = c("#d38956", "#56a0d3", "#d356a0"),
+    fmt_fn = scales::label_number(accuracy = 0.1)
+  ) %>%
+  gt_theme_nytimes() %>%
   # set title + caption + subtitle
-  tab_header(title = "Points diet under Hubert Davis",
+  tab_header(title = "Points distribution under Hubert Davis",
              subtitle = "Percentage of points scored from three-pointers, two-pointers, and free throws.") %>%
   tab_source_note(source_note = "@dadgumboxscores | December 14, 2022")  %>%
   # fix font of source note
   tab_options (source_notes.font.size = px(10),
-               table.font.size = px(12)) %>% 
+               table.font.size = px(12)) %>%
   gtsave("diet.png", expand = 10)
 
-# game-by-game data
-hubie %>% 
-  mutate(pts_three = ((`3P` * 3) / Tm) * 100,
-         pts_two = (((FG - `3P`) *2) / Tm) *100,
-         pts_ft = (FT/Tm *100)) %>% 
-        pivot_longer(cols = c(pts_three,pts_two, pts_ft),
-                     names_to = "ptd",
-                     values_to = "val",
-                     ) %>% 
-  rename(Opp = `Opp...4`) %>% 
-  select(G,Date,Opp,`W/L`,Tm,ptd,val) %>% 
-  mutate(month = case_when(
-        G < 13 ~ "November + December 2021",
-        G > 12 & G < 31 ~ "January + February",
-        G > 30 & G < 40 ~ "March + April",
-        G > 39 ~ "2022-23 season",
-  )) -> new
-
-first <- new %>%
-  group_by(G) %>%
-  summarize(list_data = list(val)) %>% 
-  arrange(G) 
-
-second <- new %>% 
-        group_by(G) %>% 
-        summarize(Opp = Opp[1], Pts = Tm[1]) %>% 
-        arrange(-G) 
-
-third  <- merge(first, second, by = "G") %>% 
-  select(G, Opp, Pts, list_data) 
-
-month <- new %>% 
-         group_by(G) %>% 
-         summarize(month = month[1]) %>% 
-         arrange(-G) 
-
-final <- merge(third, month, by = "G") %>% 
-          select(G, Opp, Pts, list_data, month) 
-      
-
-final %>%
-  arrange(-G) %>% 
-  slice(1:10) %>% 
-  select(Opp, Pts, list_data) %>% 
-  gt() %>% 
-  gt_plt_bar_stack(column = list_data, width = 70,
-                   labels = c("Threes", "Twos", "Free Throws"),
-                   palette= c("#d38956", "#56a0d3", "#d356a0"),
-                   fmt_fn = scales::label_number(accuracy = 0.1)) %>%
-  gt_theme_nytimes() %>% 
+# assists data
+assists %>%
+  slice(1:11) %>%
+  mutate(Opp = if_else(Opp == "College of Charleston", "Charleston", Opp)) %>%
+  mutate("AST:TO" = (AST - TOV),
+         logo = Opp) %>%
+  adorn_totals() %>%
+  mutate(logo = if_else(logo == "-", 'North Carolina', logo)) %>%
+  select(G, Opp, logo, `W/L`, FG, FGA, AST, TOV, `AST:TO`) %>%
+  gt() %>%
+  gt_fmt_cfb_logo(columns = "logo") %>%
+  cols_label(Opp = "Opponent",
+             logo = "",
+             G = "",
+             FG = "FGM") %>%
+  fmt(
+    columns = c(`AST:TO`),
+    fns = function(x) {
+      ifelse(x > 0, paste0("+", x), x)
+    }
+  ) %>%
+  gt_highlight_rows(
+    rows = c(2, 4, 5, 10, 11),
+    fill = "#d0e4f3",
+    bold_target_only = TRUE,
+    target_col = c(`AST:TO`),
+  ) %>%
+  gt_theme_nytimes() %>%
   # set title + caption + subtitle
-  tab_header(title = "Points diet game-by-game this season",
-             subtitle = "Percentage of points scored from three-pointers, two-pointers, and free throws.") %>%
+  tab_header(title = "Made Field Goals and Assist to Turnover Ratio") %>%
   tab_source_note(source_note = "@dadgumboxscores | December 14, 2022")  %>%
   # fix font of source note
   tab_options (source_notes.font.size = px(10),
-               table.font.size = px(12)) %>% 
-  gtsave("all_games_diet.png", expand = 10)
+               table.font.size = px(12)) %>%
+  gtsave("a_to.png", expand = 10)
+
 ```
 
 \
