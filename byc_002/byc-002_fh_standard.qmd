@@ -17,7 +17,7 @@ library(ggtext)
 
 ### Load data for wikipedia
 
-```{r load-data}
+```{r load-data, message=FALSE}
 # pull data from wikipedia and filter by at least 15 appearaces
 fh <- read_csv("fh_wiki.csv") %>% filter(App > 15)
 

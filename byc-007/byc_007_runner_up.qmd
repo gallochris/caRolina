@@ -1,0 +1,159 @@
+---
+title: "Runner-up finishes and Titles"
+date: "2022-12-19"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+editor: visual
+---
+
+```{r load-packages-and-data, include=FALSE, echo=FALSE, warning=FALSE, fig.width=16, fig.height=16}
+library(ggalt)
+library(tidyverse)
+library(ggtext)
+library(stringr)
+```
+
+### Load data and make data
+
+```{r load-data-examples, message = FALSE}
+# data was manually created
+unc <- tibble::tribble(
+~sport,~champ,~second,
+"Field Hockey",10,-11,
+"Women's Soccer",21,-6,
+"Men's Basketball",6,-6,
+"Baseball",0,-2,
+"Women's Lacrosse",3,-2,
+"Men's Lacrosse",5,-1,
+"Men's Soccer",2,-1,
+"Women's Basketball",1,0,
+"Women's Tennis",0,-1,
+"Men's Tennis",0,-1
+)
+
+```
+
+### Set the theme for the plot
+
+```{r theme-me}
+# theme
+theme_me <- function () {
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
+    theme (
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 18,
+        margin = margin(10, 10, 10, 10),
+        face = "bold",
+        lineheight = 0.75,
+      ),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        size = 10,
+        lineheight = 0.25,
+        vjust = -3,
+      ),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 8,
+        lineheight = 0.35,
+        margin = margin(t = 20)
+      ),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "#EEF6FA", color = "#EEF6FA")
+    )
+}
+```
+
+### Make the dumbbell chart
+
+```{r dumbbell-chart, warning=FALSE}
+silver <- "#868686"
+  gold <- "#DAA520"
+    
+  p1 <- unc %>%
+    mutate(sport = fct_relevel(
+      sport,
+      c(
+        "Men's Tennis",
+        "Women's Tennis",
+        "Women's Basketball",
+        "Baseball",
+        "Men's Soccer",
+        "Women's Lacrosse",
+        "Men's Lacrosse",
+        "Men's Basketball",
+        "Field Hockey",
+        "Women's Soccer"
+      )
+    )) %>%
+    arrange(sport) %>%
+    ggplot(aes(y = sport)) +
+    geom_dumbbell(
+      aes(x = champ, xend = second),
+      size = 1.5,
+      color = "#b2b2b2",
+      size_x = 3,
+      size_xend = 3,
+      colour_x = gold,
+      colour_xend = silver
+    )
+  
+  p2 <- p1 + geom_text(
+    aes(x = champ, y = sport, label = champ),
+    color = gold,
+    size = 3,
+    vjust = 2.5,
+    fontface = "bold"
+  ) +
+    geom_text(
+      aes(
+        x = second,
+        y = sport,
+        label = str_replace(second, "-", "")
+      ),
+      color = silver,
+      size = 3  ,
+      vjust = 2.5,
+      fontface = "bold"
+    )
+  
+  p3 <- p2 + geom_text(
+    data = filter(unc, sport == "Women's Soccer"),
+    aes(x = champ, y = sport, label = "Titles"),
+    color = gold,
+    size = 4,
+    vjust = -1.5,
+    fontface = "bold"
+  ) +
+    geom_text(
+      data = filter(unc, sport == "Women's Soccer"),
+      aes(x = second, y = sport, label = "Runner-up"),
+      color = silver,
+      size = 4,
+      vjust = -1.5,
+      fontface = "bold"
+    )
+  
+  p4 <- p3 + theme_me() +
+    theme(plot.title = element_markdown(), axis.text.x = element_blank()) +
+    labs(
+      x = "",
+      y = "",
+      title = "Carolina NCAA Team \n<span style='color:#DAA520;'>Titles</span> and \n<span style='color:#868686;'>Runner-up</span> finishes",
+      caption = "@dadgumboxscores | December 19, 2022"
+    )
+  
+  ggsave(
+    "titles.png",
+    p4,
+    w = 9,
+    h = 6,
+    dpi = 300,
+    type = 'cairo'
+  )
+  
+  p4
+```

@@ -104,7 +104,4 @@ assists %>%
   tab_options (source_notes.font.size = px(10),
                table.font.size = px(12)) %>%
   gtsave("a_to.png", expand = 10)
-
 ```
-
-\
