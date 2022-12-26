@@ -1,0 +1,358 @@
+---
+title: "Eckel rate"
+date: "2022-12-26"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+editor: visual
+---
+
+```{r load-packages-and-data, include=FALSE, echo=FALSE, warning=FALSE, fig.width=16, fig.height=16}
+library(tidyverse)
+library(cfbfastR)
+library(cfbplotR)
+library(glue)
+library(ggtext)
+```
+
+### Fetch data from cfbfastR
+
+```{r load-data-examples, message = FALSE}
+# data was manually created
+eckel <- cfbd_drives(2022,
+                     season_type = "regular",
+                     team = "North Carolina",
+                     offense_team = "North Carolina") %>%
+  filter(end_yards_to_goal < 41 | drive_result == "TD") %>%
+  mutate(id = row_number()) %>%
+  select(-c(
+    'offense_conference',
+    'defense_conference',
+    'drive_id',
+    'drive_number'
+  ))
+
+offense <- eckel %>%
+  mutate(
+    points = case_when(
+      drive_result == "TD" ~ "A",
+      #seven
+      drive_result == "FG" ~ "B",
+      #three
+      drive_result == "DOWNS" ~ "C",
+      #zero
+      drive_result == "FUMBLE" ~ "C",
+      drive_result == "INT" ~ "C",
+      drive_result == "MISSED FG" ~ "C",
+      drive_result == "INT TD" ~ "C",
+      drive_result == "END OF HALF" ~ "C",
+      drive_result == "END OF GAME" ~ "C",
+      drive_result == "END OF 4TH QUARTER" ~ "C"
+    )
+  ) %>%
+  arrange(points) %>%
+  group_by(defense) %>%
+  mutate(counter = row_number()) %>%
+  ungroup()
+
+
+
+off <- offense %>%
+  mutate(defense = fct_relevel(
+    defense,
+    c(
+      "Florida A&M",
+      "Appalachian State",
+      "Georgia State",
+      "Notre Dame",
+      "Virginia Tech",
+      "Miami",
+      "Duke",
+      "Pittsburgh",
+      "Virginia",
+      "Wake Forest",
+      "Georgia Tech",
+      "NC State",
+      "Clemson"
+    )
+  ))
+
+eckel_d <- cfbd_drives(2022,
+                       season_type = "regular",
+                       team = "North Carolina",
+                       defense_team = "North Carolina") %>%
+  filter(end_yards_to_goal < 41 | drive_result == "TD") %>%
+  mutate(id = row_number()) %>%
+  select(-c(
+    'offense_conference',
+    'defense_conference',
+    'drive_id',
+    'drive_number'
+  ))
+
+
+
+defense <- eckel_d %>%
+  mutate(
+    points = case_when(
+      drive_result == "TD" ~ "A",
+      #seven
+      drive_result == "FG" ~ "B",
+      #three
+      drive_result == "DOWNS" ~ "C",
+      #zero
+      drive_result == "FUMBLE" ~ "C",
+      drive_result == "INT" ~ "C",
+      drive_result == "MISSED FG" ~ "C",
+      drive_result == "INT TD" ~ "C",
+      drive_result == "END OF HALF" ~ "C",
+      drive_result == "PUNT" ~ "C"
+    )
+  ) %>%
+  arrange(points) %>%
+  group_by(offense) %>%
+  mutate(counter = row_number()) %>%
+  ungroup()
+
+
+def <- defense %>%
+  mutate(offense = fct_relevel(
+    offense,
+    c(
+      "Florida A&M",
+      "Appalachian State",
+      "Georgia State",
+      "Notre Dame",
+      "Virginia Tech",
+      "Miami",
+      "Duke",
+      "Pittsburgh",
+      "Virginia",
+      "Wake Forest",
+      "Georgia Tech",
+      "NC State",
+      "Clemson"
+    )
+  )) %>%
+  mutate(label = case_when(points == "A" ~ 7,
+                           points == "B" ~ 3,
+                           points == "C" ~ 0,))
+
+
+
+```
+
+### Set the themes for the plot
+
+```{r themes}
+# theme
+theme_me <- function () {
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
+    theme (
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 24,
+        face = "bold"
+      ),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        size = 10,
+        lineheight = 0.25,
+        vjust = -0.5
+      ),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 6,
+        lineheight = 0.35,
+        margin = margin(t = 20)
+      ),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "floral white", color = "floral white")
+    )
+}
+
+theme_def <- function () {
+  theme_minimal(base_size = 10, base_family = "RobotoCondensed-Regular") %+replace%
+    theme (
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 24,
+        face = "bold"
+      ),
+      plot.subtitle = element_text(
+        hjust = 0.5,
+        size = 10,
+        lineheight = 0.25,
+        vjust = -0.5
+      ),
+      plot.caption = element_text(
+        hjust = 1,
+        size = 6,
+        lineheight = 0.35,
+        margin = margin(t = 20)
+      ),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = "#d0e4f3", color = "#d0e4f3")
+    )
+}
+
+title = glue(
+  "<span style='font-size:24pt; color:#56a0d3;'>**North Carolina**</span> Quality Drives (Offense)"
+)
+subtitle = "<span style='font-size:11pt; color:#595F62'>Quality drive is defined by ending in a touchdown or ending inside opponents' 40 yard line.  \n<span style='color:#4daf4a; font-weight: bolder'>Touchdowns (circle)</span>  \n <span style='color:#377eb8;'>Field goals (square)</span>  \n<span style='color:#e41a1c;'>Empty (x)</span>"
+caption = "data via cfbfastR | @dadgumboxscores | December 26, 2022"
+
+title_def = glue(
+  "<span style='font-size:24pt; color:#56a0d3;'>**North Carolina**</span> Quality Drives (Defense)"
+)
+subtitle_def = "<span style='font-size:11pt; color:#595F62'>Quality drive is defined by ending in a touchdown or ending inside Carolina's 40 yard line.  \n<span style='color:#4daf4a; font-weight: bolder'>Touchdowns (circle)</span>  \n <span style='color:#377eb8;'>Field goals (square)</span>  \n<span style='color:#e41a1c;'>Empty (x)</span>"
+
+
+```
+
+### Make the charts
+
+```{r charts, warning=FALSE}
+off_plot <- off %>%
+  ggplot(x = defense) +
+  geom_point(
+    data = off %>% filter(points == "A"),
+    mapping = aes(y = counter, x = defense),
+    stroke = 0.8,
+    fill = "#4daf4a",
+    size = 6,
+    shape = 21
+  ) +
+  geom_point(
+    data = off %>% filter(points == "B"),
+    mapping = aes(y = counter, x = defense),
+    stroke = 0.8,
+    fill = "#377eb8",
+    size = 6,
+    shape = 22
+  ) +
+  geom_point(
+    data = off %>% filter(points == "C"),
+    mapping = aes(y = counter, x = defense),
+    stroke = 0.8,
+    color = "#e41a1c",
+    size = 6,
+    shape = 4
+  ) +
+  coord_flip() + theme_me() +
+  scale_y_continuous(breaks = seq(0, 10, 1)) +
+  labs(title = title,
+       subtitle = subtitle,
+       caption = caption) +
+  annotate(
+    geom = "label",
+    x = 11.5,
+    y = 9,
+    color = "#595F62",
+    fill = "lightgreen",
+    label = '96 quality drives \n59 touchdowns (61.5%) \n13 field goals (13.5%) \n24 empty drives (25%)'
+  ) +
+  theme(
+    text = element_text(),
+    plot.title = element_textbox_simple(),
+    plot.subtitle = element_textbox_simple(margin = margin(t = 6, b =
+                                                             5)),
+    plot.caption = element_textbox_simple(color = "#595F62", margin =
+                                            margin(t = 6, b = 5)),
+    axis.title = element_blank(),
+    axis.text.y = element_cfb_logo(size = 0.9),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    plot.margin = margin(
+      l = 20,
+      r = 20,
+      t = 15,
+      b = 10
+    ),
+    legend.position = "none"
+  )
+
+
+# annotations
+ggsave(
+  "offense.png",
+  off_plot,
+  w = 7.8,
+  h = 7.8,
+  dpi = 300,
+  type = 'cairo'
+)
+
+def_plot <- def %>%
+  ggplot(x = offense) +
+  geom_point(
+    data = def %>% filter(points == "A"),
+    mapping = aes(y = counter, x = offense),
+    stroke = 0.8,
+    fill = "#4daf4a",
+    size = 6,
+    shape = 21
+  ) +
+  geom_point(
+    data = def %>% filter(points == "B"),
+    mapping = aes(y = counter, x = offense),
+    stroke = 0.8,
+    fill = "#377eb8",
+    size = 6,
+    shape = 22
+  ) +
+  geom_point(
+    data = def %>% filter(points == "C"),
+    mapping = aes(y = counter, x = offense),
+    stroke = 0.8,
+    color = "#e41a1c",
+    size = 6,
+    shape = 4
+  ) +
+  coord_flip() + theme_def() +
+  scale_y_continuous(breaks = seq(0, 11, 1)) +
+  labs(title = title_def,
+       subtitle = subtitle_def,
+       caption = caption) +
+  annotate(
+    geom = "label",
+    x = 7.5,
+    y = 9.5,
+    color = "#595F62",
+    fill = "lightpink",
+    label = '82 quality opponent drives \n52 touchdowns (63.5%) \n10 field goals (12%) \n20 empty drives (24.5%)'
+  ) +
+  theme(
+    text = element_text(),
+    plot.title = element_textbox_simple(),
+    plot.subtitle = element_textbox_simple(margin = margin(t = 6, b =
+                                                             5)),
+    plot.caption = element_textbox_simple(color = "#595F62", margin =
+                                            margin(t = 6, b = 5)),
+    axis.title = element_blank(),
+    axis.text.y = element_cfb_logo(size = 0.9),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    plot.margin = margin(
+      l = 20,
+      r = 20,
+      t = 15,
+      b = 10
+    ),
+    legend.position = "none"
+  )
+
+ggsave(
+  "defense.png",
+  def_plot,
+  w = 7.8,
+  h = 7.8,
+  dpi = 300,
+  type = 'cairo'
+)
+
+off_plot
+
+def_plot
+```
