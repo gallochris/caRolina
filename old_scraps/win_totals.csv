@@ -1,128 +1,133 @@
-team,total
-Ohio State,10.5
-Florida State,10
-Penn State,9.5
-Boise State,9
-Notre Dame,9
-Air Force,8.5
-Kansas State,8.5
-North Carolina,8.5
-Western Kentucky,8.5
-Coastal Carolina,8
-Fresno State,8
-Oregon State,8
-South Alabama,8
-James Madison,7.5
-Miami FL,7.5
-Ole Miss,7.5
-Texas A&M,7.5
-Texas Tech,7.5
-Appalachian State,6.5
-Eastern Michigan,6.5
-Miami OH,6.5
-Middle Tennessee,6.5
-Mississippi State,6.5
-North Texas,6.5
-Northern Illinois,6.5
-Oklahoma State,6.5
-South Carolina,6.5
-Washington State,6.5
-Georgia Southern,6
-Utah State,6
-Wake Forest,6
-Boston College,5.5
-Central Michigan,5.5
-East Carolina,5.5
-Georgia State,5.5
-Iowa State,5.5
-Jacksonville State,5.5
-Louisiana Tech,5.5
-Michigan State,5.5
-Arizona State,5
-Bowling Green,5
-Southern Miss,5
-Virginia Tech,5
-Arkansas State,4.5
-Ball State,4.5
-Colorado State,4.5
-Georgia Tech,4.5
-Texas State,4.5
-West Virginia,4.5
-New Mexico,4
-Old Dominion,4
-Sam Houston,4
-South Florida,3.5
-Western Michigan,3.5
-Kent State,2.5
-Georgia,11.5
-Alabama,10.5
-Michigan,10.5
-Clemson,9.5
-Liberty,9.5
-LSU,9.5
-Oklahoma,9.5
-Oregon,9.5
-Tennessee,9.5
-Texas,9.5
-Tulane,9.5
-USC,9.5
-Washington,9
-Wisconsin,9
-UCLA,8.5
-Utah,8.5
-Louisville,8
-SMU,8
-Troy,8
-Baylor,7.5
-Iowa,7.5
-TCU,7.5
-Arkansas,7
-Marshall,7
-Maryland,7
-Ohio,7
-Auburn,6.5
-Duke,6.5
-Illinois,6.5
-Kansas,6.5
-Kentucky,6.5
-Louisiana-Lafayette,6.5
-Minnesota,6.5
-Missouri,6.5
-Navy,6.5
-Pittsburgh,6.5
-Syracuse,6.5
-UCF,6.5
-Wyoming,6.5
-Army,6
-Nebraska,6
-UNLV,6
-BYU,5.5
-Cincinnati,5.5
-Florida,5.5
-Purdue,5.5
-Connecticut,5.5
-UTEP,5.5
-Arizona,5
-California,5
-Rice,5
-Temple,5
-UAB,5
-Houston,4.5
-Tulsa,4
-Akron,3.5
-Hawaii,3.5
-Indiana,3.5
-Northwestern,3.5
-ULM,3.5
-Vanderbilt,3.5
-Virginia,3.5
-Colorado,3
-Nevada,3
-Stanford,3
-Charlotte,2.5
-FIU,2.5
-Massachusetts,1.5
-San Diego State,7
-NC State,6.5
-San Jose State,5.5
-New Mexico State,5
+"","team","color","alt_color","total"
+"1","Air Force","#004a7b","#ffffff",8.5
+"2","Akron","#00285e","#84754e",3.5
+"3","Alabama","#690014","#f1f2f3",10.5
+"4","Appalachian State","#000000","#ffcd00",6.5
+"5","Arizona","#002449","#00205b",5
+"6","Arizona State","#942139","#f1f2f3",5
+"7","Arkansas","#9c1831","#000000",7
+"8","Arkansas State","#e81018","#000000",4.5
+"9","Army","#ce9c00","#231f20",6
+"10","Auburn","#03244d","#f1f2f3",6.5
+"11","Ball State","#DA0000","#ffffff",4.5
+"12","Baylor","#004834","#ffb81c",7.5
+"13","Boise State","#09347A","#d8d9da",9
+"14","Boston College","#88001a","#a39161",5.5
+"15","Bowling Green","#2b1000","#492000",5
+"16","Buffalo","#041A9B","#ebebeb",6.5
+"17","BYU","#001E4C","#ffffff",5.5
+"18","California","#031522","#ffc423",5
+"19","Central Michigan","#6a0032","#ffffff",5.5
+"20","Charlotte","#0C562D","#cfab7a",2.5
+"21","Cincinnati","#000000","#717073",5.5
+"22","Clemson","#F66733","#522d80",9.5
+"23","Coastal Carolina","#007073","#876447",8
+"24","Colorado","#d1c57e","#ffd200",3
+"25","Colorado State","#004537","#ffc425",4.5
+"26","Connecticut","#001d40","#f1f2f3",5.5
+"27","Duke","#001A57","#f1f2f3",6.5
+"28","East Carolina","#4b1869","#f0907b",5.5
+"29","Eastern Michigan","#00331b","#f0f0f0",6.5
+"30","Florida","#0021A5","#0021a5",5.5
+"31","Florida Atlantic","#004B85","#bb2f4c",7.5
+"32","Florida International","#001538","#c5960c",2.5
+"33","Florida State","#782F40","#ceb888",10
+"34","Fresno State","#c41230","#231f20",8
+"35","Georgia","#CC0000","#000000",11.5
+"36","Georgia Southern","#003775","#f0f0f0",6
+"37","Georgia State","#1e539a","#ebebeb",5.5
+"38","Georgia Tech","#00223e","#002c56",4.5
+"39","Hawai'i","#003420","#ffffff",3.5
+"40","Houston","#C90822","#231f20",4.5
+"41","Illinois","#f77329","#fa6300",6.5
+"42","Indiana","#7D110C","#eeedeb",3.5
+"43","Iowa","#000000","#ffe100",7.5
+"44","Iowa State","#660015","#830b2c",5.5
+"45","Jacksonville State","#b50500","#b5b7ba",5.5
+"46","James Madison","#450084","#cbb778",7.5
+"47","Kansas","#0022B4","#e8000d",6.5
+"48","Kansas State","#633194","#e7d2ad",8.5
+"49","Kent State","#002445","#f0b510",2.5
+"50","Kentucky","#005DAA","#ffffff",6.5
+"51","Liberty","#071740","#a61f21",9.5
+"52","Louisiana Monroe","#231F20","#b18445",3.5
+"53","Louisiana Tech","#002d65","#d3313a",5.5
+"54","Louisville","#ad000a","#cccccc",8
+"55","LSU","#22005c","#fdd023",9.5
+"56","Marshall","#186329","#be854c",7
+"57","Maryland","#D5002B","#ffcd00",7
+"58","Memphis","#002447","#231f20",7.5
+"59","Miami","#004325","#f0f0f0",7.5
+"60","Miami (OH)","#a4000c","#f0f0f0",6.5
+"61","Michigan","#00274c","#ffcb05",10.5
+"62","Michigan State","#18453B","#ffffff",5.5
+"63","Middle Tennessee","#0079C2","#c3c5c8",6.5
+"64","Minnesota","#7F011B","#7a0019",6.5
+"65","Mississippi State","#762123","#c8c8c8",6.5
+"66","Missouri","#000000","#000000",6.5
+"67","Navy","#131630","#b6a77c",6.5
+"68","NC State","#EF1216","#231f20",6.5
+"69","Nebraska","#F20017","#f5f1e7",6
+"70","Nevada","#153E5F","#8e9295",3
+"71","New Mexico","#000000","#231f20",4
+"72","New Mexico State","#891216","#000000",5
+"73","North Carolina","#99bfe5","#13294b",8.5
+"74","North Texas","#00853D","#000000",6.5
+"75","Northern Illinois","#F1122C","#cc0000",6.5
+"76","Northwestern","#372286","#d6cac1",3.5
+"77","Notre Dame","#00122b","#ae9142",9
+"78","Ohio","#295A29","#e4bb85",7
+"79","Ohio State","#DE3121","#666666",10.5
+"80","Oklahoma","#7b0000","#cccccc",9.5
+"81","Oklahoma State","#FF6500","#ff9900",6.5
+"82","Old Dominion","#00507d","#a1d2f1",4
+"83","Ole Miss","#001148","#00205b",7.5
+"84","Oregon","#044520","#fee123",9.5
+"85","Oregon State","#c34500","#dea076",8
+"86","Penn State","#00265D","#002e5c",9.5
+"87","Pittsburgh","#003263","#231f20",6.5
+"88","Purdue","#B89D29","#a4a9ad",5.5
+"89","Rice","#003D7D","#d1d5d8",5
+"90","Rutgers","#d21034","#ffffff",3.5
+"91","Sam Houston State","#F78F1E","#f78e1e",4
+"92","San Diego State","#BF2C37","#a8996e",7
+"93","San José State","#005893","#fdba31",5.5
+"94","SMU","#E32F38","#ecdcb9",8
+"95","South Alabama","#003E7E","#ffffff",8
+"96","South Carolina","#670010","#000000",6.5
+"97","South Florida","#004A36","#231f20",3.5
+"98","Southern Mississippi","#FFAA3C","#ffc423",5
+"99","Stanford","#A80532","#ffffff",3
+"100","Syracuse","#F37321","#0d1d37",6.5
+"101","TCU","#3C377D","#f1f2f3",7.5
+"102","Temple","#A80532","#a7a9ac",5
+"103","Tennessee","#EE9627","#ffffff",9.5
+"104","Texas","#EE7524","#f0f0f0",9.5
+"105","Texas A&M","#5C0025","#ffffff",7.5
+"106","Texas State","#4e1719","#b4975a",4.5
+"107","Texas Tech","#C80025","#231f20",7.5
+"108","Toledo","#00488F","#ffd51d",8.5
+"109","Troy","#AE0210","#88898c",8
+"110","Tulane","#005837","#3baf29",9.5
+"111","Tulsa","#004371","#ee3b33",4
+"112","UAB","#003b28","#ffc845",5
+"113","UCF","#000000","#231f20",6.5
+"114","UCLA","#005C8E","#ffc72c",8.5
+"115","UMass","#880007","#ffffff",1.5
+"116","UNLV","#000000","#c2c4c6",6
+"117","USC","#AE2531","#ffc72c",9.5
+"118","Utah","#890012","#7e8083",8.5
+"119","Utah State","#003263","#949ca1",6
+"120","UTEP","#002843","#ff6f12",5.5
+"121","UTSA","#002A5C","#f47321",7.5
+"122","Vanderbilt","#000000","#231f20",3.5
+"123","Virginia","#00204e","#002d62",3.5
+"124","Virginia Tech","#74232D","#c2c1ba",5
+"125","Wake Forest","#9E7E38","#000000",6
+"126","Washington","#2B2F64","#e8e3d3",9
+"127","Washington State","#94022a","#6a747c",6.5
+"128","West Virginia","#FFC600","#eaaa00",4.5
+"129","Western Kentucky","#F32026","#b3b5b8",8.5
+"130","Western Michigan","#B59966","#bfa979",3.5
+"131","Wisconsin","#A00001","#f7f7f7",9
+"132","Wyoming","#533B22","#ffffff",6.5
